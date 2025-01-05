@@ -26,7 +26,9 @@ export default function CategoryPage() {
   const handleDelete = async (id: number) => {
     startTransition(async () => {
       await deleteCategory(id)
-      setCategories(categories.filter(category => category.id !== id))
+      if (!isPending) {
+        setCategories(categories.filter(category => category.id !== id))
+      }
     })
   }
 

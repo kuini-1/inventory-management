@@ -26,7 +26,9 @@ export default function TransactionPage() {
   const handleDelete = async (id: number) => {
     startTransition(async () => {
       await deleteTransaction(id)
-      setTransactions(transactions.filter(transaction => transaction.id !== id))
+      if (!isPending) {
+        setTransactions(transactions.filter(transaction => transaction.id !== id))
+      }
     })
   }
 

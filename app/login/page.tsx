@@ -91,7 +91,7 @@ export default function Login() {
                         <Button className="w-full" type="submit">Submit</Button>
                         
                         <div className="text-center text-sm text-muted-foreground">
-                            Don't have an account?{" "}
+                            Don&apos;t have an account?{" "}
                             <a href="/register" className="text-primary hover:underline">
                                 Register here
                             </a>

@@ -4,7 +4,7 @@ import { PrismaClient } from '@prisma/client'
 import { SignJWT } from 'jose'
 import bcrypt from 'bcryptjs'
 import { cookies } from 'next/headers'
-import { AuthUser, verifyAuth } from '@/app/lib/auth'
+import { AuthUser } from '@/app/lib/auth'
 import { redirect } from 'next/navigation'
 
 function getPrismaClient() {

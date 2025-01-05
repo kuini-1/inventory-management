@@ -40,6 +40,7 @@ export async function verifyAuth() {
 
         return { id: payload.id, username: payload.username, role: payload.role } as AuthUser
     } catch (error) {
+        console.error(error)
         cookieStore.delete('token')
         redirect('/login')
     }

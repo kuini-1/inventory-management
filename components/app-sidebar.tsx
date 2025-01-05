@@ -21,7 +21,7 @@ import {
 
 export function AppSidebar() {
   const router = useRouter()
-  const [isPending, startTransition] = useTransition()
+  const [, startTransition] = useTransition()
   const [hasAccess, setHasAccess] = useState<AuthUser | null>(null)
   const [isLoaded, setIsLoaded] = useState(false)
 
@@ -31,6 +31,7 @@ export function AppSidebar() {
         const result = await verifyAuth()
         setHasAccess(result)
       } catch (error) {
+        console.error(error)
         setHasAccess(null)
       } finally {
         setIsLoaded(true)
