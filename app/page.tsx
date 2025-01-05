@@ -61,7 +61,7 @@ export default function DashboardPage() {
         getInventoryTransactions()
       ])
 
-      const totalRevenue = orders.reduce((sum: number, order) => 
+      const totalRevenue = orders.reduce((sum: number, order: Order) => 
         sum + order.orderItems.reduce((itemSum: number, item) => 
           itemSum + (item.quantity * item.price), 0), 0
       )
@@ -141,7 +141,7 @@ export default function DashboardPage() {
                     </p>
                   </div>
                   <p className="font-medium">
-                    ${order.orderItems.reduce((sum: number, item) => 
+                    ${order.orderItems.reduce((sum: number, item: { quantity: number, price: number }) => 
                       sum + (item.quantity * item.price), 0).toFixed(2)}
                   </p>
                 </div>
