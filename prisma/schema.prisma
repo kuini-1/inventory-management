@@ -1,0 +1,102 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+// npx prisma migrate dev --name init
+// npx prisma generate
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          Int      @id @default(autoincrement())
+  username    String   @unique
+  password    String
+  roleId      Int      @default(1)
+  role        Role     @relation(fields: [roleId], references: [id])
+  createdAt   DateTime @default(now())
+}
+
+model Role {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  users User[]
+}
+
+model Category {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
+  description String?
+  products    Product[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Supplier {
+  id        Int       @id @default(autoincrement())
+  name      String
+  contact   String?
+  email     String?   @unique
+  phone     String?
+  products  Product[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Product {
+  id           Int                    @id @default(autoincrement())
+  name         String
+  sku          String                 @unique
+  description  String?
+  price        Float
+  categoryId   Int
+  supplierId   Int?
+  category     Category               @relation(fields: [categoryId], references: [id])
+  supplier     Supplier?              @relation(fields: [supplierId], references: [id])
+  transactions InventoryTransaction[]
+  createdAt    DateTime               @default(now())
+  updatedAt    DateTime               @updatedAt
+  OrderItem    OrderItem[]
+}
+
+model InventoryTransaction {
+  id        Int      @id @default(autoincrement())
+  productId Int
+  quantity  Int
+  typeId    Int
+  createdAt DateTime @default(now())
+  product   Product  @relation(fields: [productId], references: [id])
+  type      InventoryTransactionType @relation(fields: [typeId], references: [id])
+}
+
+model InventoryTransactionType {
+  id   Int    @id @default(autoincrement())
+  type String
+  transactions InventoryTransaction[]
+}
+
+model Order {
+  id           Int         @id @default(autoincrement())
+  customerName String
+  orderDate    DateTime    @default(now())
+  orderItems   OrderItem[]
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+}
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  orderId   Int
+  productId Int
+  quantity  Int
+  price     Float
+  order     Order   @relation(fields: [orderId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
+}
