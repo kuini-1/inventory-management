@@ -7,12 +7,14 @@ import { Product } from "./types"
 import { DataTable } from "@/components/data-table"
 import { Button } from "@/components/ui/button"
 import { Plus, Edit, Trash } from "lucide-react"
+import { TableSkeleton } from "@/components/skeletons/table-skeleton"
 
 export default function ProductPage() {
   const [products, setProducts] = useState<Product[]>([])
   const [isPending, startTransition] = useTransition()
   const [editProduct, setEditProduct] = useState<Product | null>(null)
   const [isFormOpen, setIsFormOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   const fetchProducts = async () => {
     const data = await getProducts()
@@ -20,8 +22,19 @@ export default function ProductPage() {
   }
 
   useEffect(() => {
-    fetchProducts()
+    const fetchData = async () => {
+      try {
+        await fetchProducts()
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    fetchData()
   }, [])
+
+  if (isLoading) {
+    return <TableSkeleton />
+  }
 
   const handleDelete = async (id: number) => {
     startTransition(async () => {

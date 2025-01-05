@@ -6,6 +6,7 @@ import { getProducts } from "@/app/actions/product"
 import { getOrders } from "@/app/actions/order"
 import { getInventoryTransactions } from "@/app/actions/inventory-transaction"
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
+import { DashboardSkeleton } from "@/components/skeletons/dashboard-skeleton"
 
 interface Order {
   id: number
@@ -37,6 +38,7 @@ function formatThaiDate(date: Date) {
 }
 
 export default function DashboardPage() {
+  const [isLoading, setIsLoading] = useState(true)
   const [metrics, setMetrics] = useState<{
     totalProducts: number
     totalOrders: number
@@ -55,33 +57,41 @@ export default function DashboardPage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const [products, orders, transactions] = await Promise.all([
-        getProducts(),
-        getOrders(),
-        getInventoryTransactions()
-      ])
+      try {
+        const [products, orders, transactions] = await Promise.all([
+          getProducts(),
+          getOrders(),
+          getInventoryTransactions()
+        ])
 
-      const totalRevenue = orders.reduce((sum: number, order: Order) => 
-        sum + order.orderItems.reduce((itemSum: number, item) => 
-          itemSum + (item.quantity * item.price), 0), 0
-      )
+        const totalRevenue = orders.reduce((sum: number, order: Order) => 
+          sum + order.orderItems.reduce((itemSum: number, item) => 
+            itemSum + (item.quantity * item.price), 0), 0
+        )
 
-      const totalInventory = transactions.reduce((sum: number, transaction: { quantity: number }) => 
-        sum + transaction.quantity, 0
-      )
+        const totalInventory = transactions.reduce((sum: number, transaction: { quantity: number }) => 
+          sum + transaction.quantity, 0
+        )
 
-      setMetrics({
-        totalProducts: products.length,
-        totalOrders: orders.length,
-        totalRevenue,
-        totalInventory,
-        recentOrders: orders.slice(-5),
-        inventoryMovement: transactions.slice(-10)
-      })
+        setMetrics({
+          totalProducts: products.length,
+          totalOrders: orders.length,
+          totalRevenue,
+          totalInventory,
+          recentOrders: orders.slice(-5),
+          inventoryMovement: transactions.slice(-10)
+        })
+      } finally {
+        setIsLoading(false)
+      }
     }
 
     fetchData()
   }, [])
+
+  if (isLoading) {
+    return <DashboardSkeleton />
+  }
 
   return (
     <div className="container mx-auto p-10">
