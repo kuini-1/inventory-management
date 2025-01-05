@@ -26,7 +26,9 @@ export default function OrderPage() {
   const handleDelete = async (id: number) => {
     startTransition(async () => {
       await deleteOrder(id)
-      setOrders(orders.filter(order => order.id !== id))
+      if (!isPending) {
+        setOrders(orders.filter(order => order.id !== id))
+      }
     })
   }
 

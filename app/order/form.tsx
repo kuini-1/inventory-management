@@ -3,7 +3,7 @@
 import { useState, useTransition, useEffect } from "react"
 import { createOrder, updateOrder } from "@/app/actions/order"
 import { getProducts } from "@/app/actions/product"
-import { Order, OrderItem } from "./types"
+import { Order } from "./types"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogClose } from "@/components/ui/dialog"

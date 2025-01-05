@@ -26,7 +26,9 @@ export default function TransactionTypePage() {
   const handleDelete = async (id: number) => {
     startTransition(async () => {
       await deleteTransactionType(id)
-      setTransactionTypes(transactionTypes.filter(type => type.id !== id))
+      if (!isPending) {
+        setTransactionTypes(transactionTypes.filter(type => type.id !== id))
+      }
     })
   }
 

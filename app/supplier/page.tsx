@@ -26,7 +26,9 @@ export default function SupplierPage() {
   const handleDelete = async (id: number) => {
     startTransition(async () => {
       await deleteSupplier(id)
-      setSuppliers(suppliers.filter(supplier => supplier.id !== id))
+      if (!isPending) {
+        setSuppliers(suppliers.filter(supplier => supplier.id !== id))
+      }
     })
   }
 

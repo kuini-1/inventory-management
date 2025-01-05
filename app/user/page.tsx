@@ -26,7 +26,9 @@ export default function UserPage() {
   const handleDelete = async (id: number) => {
     startTransition(async () => {
       await deleteUser(id)
-      setUsers(users.filter(user => user.id !== id))
+      if (!isPending) {
+        setUsers(users.filter(user => user.id !== id))
+      }
     })
   }
 

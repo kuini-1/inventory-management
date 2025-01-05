@@ -26,7 +26,9 @@ export default function ProductPage() {
   const handleDelete = async (id: number) => {
     startTransition(async () => {
       await deleteProduct(id)
-      setProducts(products.filter(product => product.id !== id))
+      if (!isPending) {
+        setProducts(products.filter(product => product.id !== id))
+      }
     })
   }
 
