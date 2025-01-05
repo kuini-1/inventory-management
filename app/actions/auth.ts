@@ -67,7 +67,7 @@ async function setAuthCookie(user: AuthUser) {
   const token = await new SignJWT({
     id: user.id,
     username: user.username,
-    [Symbol.iterator]: Array.prototype[Symbol.iterator]
+    role: user.role
   })
     .setProtectedHeader({ alg: 'HS256' })
     .setExpirationTime('1d')

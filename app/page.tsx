@@ -66,7 +66,7 @@ export default function DashboardPage() {
           itemSum + (item.quantity * item.price), 0), 0
       )
 
-      const totalInventory = transactions.reduce((sum, transaction) => 
+      const totalInventory = transactions.reduce((sum: number, transaction: { quantity: number }) => 
         sum + transaction.quantity, 0
       )
 
