@@ -74,7 +74,7 @@ export default function OrderPage() {
             header: 'Total Amount',
             cell: ({ row }) => {
               const total = row.original.orderItems.reduce(
-                (sum, item) => sum + (item.quantity * item.price), 
+                (sum: number, item) => sum + (item.quantity * item.price), 
                 0
               )
               return <span>${total.toFixed(2)}</span>
